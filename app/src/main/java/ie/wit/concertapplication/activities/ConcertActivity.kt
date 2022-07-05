@@ -5,11 +5,14 @@ import android.os.Bundle
 import com.google.android.material.snackbar.Snackbar
 import ie.wit.concertapplication.R
 import ie.wit.concertapplication.databinding.ActivityConcertBinding
+import ie.wit.concertapplication.models.ConcertModel
 import timber.log.Timber
 import timber.log.Timber.i
 
 class ConcertActivity : AppCompatActivity() {
     private lateinit var binding: ActivityConcertBinding
+    val concerts = ArrayList<ConcertModel>()
+    var concert = ConcertModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,21 +24,26 @@ class ConcertActivity : AppCompatActivity() {
 
         binding = ActivityConcertBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        binding.btnAdd.setOnClickListener(){
-            val concertHeadliner = binding.headlineAct.text.toString()
-            val concertUrl = binding.url.text.toString()
-            val concertAddress = binding.address.text.toString()
-            val day = binding.datePicker.dayOfMonth
-            val month = binding.datePicker.month
-            val year = binding.datePicker.year
 
-            if(concertHeadliner.isNotEmpty() && concertUrl.isNotEmpty() && concertAddress.isNotEmpty()){
+        binding.btnAdd.setOnClickListener(){
+            concert.headlineAct = binding.headlineAct.text.toString()
+            concert.url = binding.url.text.toString()
+            concert.address = binding.address.text.toString()
+            concert.day = binding.datePicker.dayOfMonth
+            concert.month = binding.datePicker.month
+            concert.year = binding.datePicker.year
+
+            if( concert.headlineAct.isNotEmpty() &&
+                concert.url.isNotEmpty() &&
+                concert.address.isNotEmpty())
+            {
                 i("""
-                    Concert Added For: $concertHeadliner  
-                    Location: $concertAddress
-                    Contact At: $concertUrl
-                    Date: $day/ $month/ $year
+                    Concert Added For: ${concert.headlineAct}  
+                    Location: ${concert.address}
+                    Contact At: ${concert.url}
+                    Date: ${concert.day}/ ${concert.month}/ ${concert.year}
                     """)
+                concerts.add(concert.copy())
             }
             else {
                 Snackbar
