@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">ConcertApplication</string>
+    <string name="button_addConcert">Add a Concert</string>
+    <string name="button_quit">Quit</string>
+    <string name="hint_headlineAct">Headline Act</string>
+    <string name="hint_url">URL</string>
+    <string name="hint_address">Address</string>
 </resources>
