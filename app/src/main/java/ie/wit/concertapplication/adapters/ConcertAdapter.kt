@@ -6,29 +6,37 @@ import androidx.recyclerview.widget.RecyclerView
 import ie.wit.concertapplication.databinding.CardConcertBinding
 import ie.wit.concertapplication.models.ConcertModel
 
-class ConcertAdapter constructor(private var concerts: List<ConcertModel>): RecyclerView.Adapter<ConcertAdapter.MainHolder>() {
+interface ConcertListener {
+    fun onConcertClick(concert: ConcertModel)
+}
+
+class ConcertAdapter constructor(private var concerts: List<ConcertModel>,
+private val listener: ConcertListener):
+    RecyclerView.Adapter<ConcertAdapter.MainHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainHolder {
         val binding = CardConcertBinding
             .inflate(LayoutInflater.from(parent.context), parent, false)
 
-        return MainHolder(binding)
+        return MainHolder(binding, listener)
     }
 
     override fun onBindViewHolder(holder: MainHolder, position: Int) {
         val concert = concerts[holder.adapterPosition]
-        holder.bind(concert)
+        holder.bind(concert, listener)
     }
 
     override fun getItemCount(): Int = concerts.size
 
-    class MainHolder(private val binding: CardConcertBinding) :
+    class MainHolder(private val binding: CardConcertBinding, listener: ConcertListener) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(concert: ConcertModel) {
+        fun bind(concert: ConcertModel, listener: ConcertListener) {
             binding.concertHeadlineAct.text = concert.headlineAct
             binding.concertUrl.text = concert.url
             binding.concertAddress.text = concert.address
             binding.concertDate.text = "${concert.day} / ${concert.month} / ${concert.year}"
+
+            binding.root.setOnClickListener {listener.onConcertClick(concert)}
         }
     }
 }

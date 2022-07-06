@@ -8,10 +8,12 @@ import android.view.MenuItem
 import androidx.recyclerview.widget.LinearLayoutManager
 import ie.wit.concertapplication.R
 import ie.wit.concertapplication.adapters.ConcertAdapter
+import ie.wit.concertapplication.adapters.ConcertListener
 import ie.wit.concertapplication.databinding.ActivityConcertListBinding
 import ie.wit.concertapplication.main.MainApp
+import ie.wit.concertapplication.models.ConcertModel
 
-class ConcertListActivity : AppCompatActivity() {
+class ConcertListActivity : AppCompatActivity(), ConcertListener {
     lateinit var app : MainApp
     private lateinit var binding: ActivityConcertListBinding
 
@@ -24,7 +26,7 @@ class ConcertListActivity : AppCompatActivity() {
 
         val layoutManager = LinearLayoutManager(this)
         binding.recyclerView.layoutManager = layoutManager
-        binding.recyclerView.adapter = ConcertAdapter(app.concerts)
+        binding.recyclerView.adapter = ConcertAdapter(app.concerts.findAll(), this)
 
         binding.toolbar.title = title
         setSupportActionBar(binding.toolbar)
@@ -43,5 +45,11 @@ class ConcertListActivity : AppCompatActivity() {
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    override fun onConcertClick(concert: ConcertModel) {
+        val launcherIntent = Intent(this, ConcertActivity::class.java)
+        launcherIntent.putExtra("concert_edit", concert)
+        startActivityForResult(launcherIntent, 0)
     }
 }

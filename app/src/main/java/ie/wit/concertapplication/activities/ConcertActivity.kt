@@ -30,6 +30,15 @@ class ConcertActivity : AppCompatActivity() {
         setSupportActionBar(binding.toolbarAdd)
 
         app = application as MainApp
+
+        if(intent.hasExtra("concert_edit")){
+            concert = intent.extras?.getParcelable("concert_edit")!!
+            binding.headlineAct.setText(concert.headlineAct)
+            binding.url.setText(concert.url)
+            binding.address.setText(concert.address)
+            // Must implement date picking
+        }
+
         binding.btnAdd.setOnClickListener(){
             concert.headlineAct = binding.headlineAct.text.toString()
             concert.url = binding.url.text.toString()
@@ -42,22 +51,21 @@ class ConcertActivity : AppCompatActivity() {
                 concert.url.isNotEmpty() &&
                 concert.address.isNotEmpty())
             {
-                app.concerts.add(concert.copy())
-                for (i in app.concerts.indices) {
-                    i("Placemark[$i]:${this.app.concerts[i]}")
-                }
+                app.concerts.create(concert.copy())
                 setResult(RESULT_OK)
                 finish()
             }
             else {
                 Snackbar
-                    .make(it,"Info Missing, please fix", Snackbar.LENGTH_LONG)
+                    .make(it,"${binding}", Snackbar.LENGTH_LONG)
                     .show()
             }
         }
         binding.btnQuit.setOnClickListener(){
             i("Quit Button Pressed")
         }
+
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
