@@ -2,6 +2,8 @@ package ie.wit.concertapplication.activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import com.google.android.material.snackbar.Snackbar
 import ie.wit.concertapplication.R
 import ie.wit.concertapplication.databinding.ActivityConcertBinding
@@ -24,6 +26,9 @@ class ConcertActivity : AppCompatActivity() {
         binding = ActivityConcertBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        binding.toolbarAdd.title = title
+        setSupportActionBar(binding.toolbarAdd)
+
         app = application as MainApp
         binding.btnAdd.setOnClickListener(){
             concert.headlineAct = binding.headlineAct.text.toString()
@@ -37,12 +42,6 @@ class ConcertActivity : AppCompatActivity() {
                 concert.url.isNotEmpty() &&
                 concert.address.isNotEmpty())
             {
-//                i("""
-//                    Concert Added For: ${concert.headlineAct}
-//                    Location: ${concert.address}
-//                    Contact At: ${concert.url}
-//                    Date: ${concert.day}/ ${concert.month}/ ${concert.year}
-//                    """)
                 app.concerts.add(concert.copy())
                 for (i in app.concerts.indices) {
                     i("Placemark[$i]:${this.app.concerts[i]}")
@@ -59,5 +58,19 @@ class ConcertActivity : AppCompatActivity() {
         binding.btnQuit.setOnClickListener(){
             i("Quit Button Pressed")
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu_concert, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.item_cancel -> {
+                finish()
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 }
