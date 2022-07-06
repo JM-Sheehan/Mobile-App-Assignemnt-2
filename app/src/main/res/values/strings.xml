@@ -5,4 +5,5 @@
     <string name="hint_headlineAct">Headline Act</string>
     <string name="hint_url">URL</string>
     <string name="hint_address">Address</string>
+    <string name="menu_addConcert">Add</string>
 </resources>

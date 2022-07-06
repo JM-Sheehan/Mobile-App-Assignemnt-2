@@ -5,26 +5,26 @@ import android.os.Bundle
 import com.google.android.material.snackbar.Snackbar
 import ie.wit.concertapplication.R
 import ie.wit.concertapplication.databinding.ActivityConcertBinding
+import ie.wit.concertapplication.main.MainApp
 import ie.wit.concertapplication.models.ConcertModel
 import timber.log.Timber
 import timber.log.Timber.i
 
 class ConcertActivity : AppCompatActivity() {
     private lateinit var binding: ActivityConcertBinding
-    val concerts = ArrayList<ConcertModel>()
+    lateinit var app: MainApp
     var concert = ConcertModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_concert)
 
-        Timber.plant(Timber.DebugTree())
-
         i("Concert Activity started..")
 
         binding = ActivityConcertBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        app = application as MainApp
         binding.btnAdd.setOnClickListener(){
             concert.headlineAct = binding.headlineAct.text.toString()
             concert.url = binding.url.text.toString()
@@ -37,13 +37,18 @@ class ConcertActivity : AppCompatActivity() {
                 concert.url.isNotEmpty() &&
                 concert.address.isNotEmpty())
             {
-                i("""
-                    Concert Added For: ${concert.headlineAct}  
-                    Location: ${concert.address}
-                    Contact At: ${concert.url}
-                    Date: ${concert.day}/ ${concert.month}/ ${concert.year}
-                    """)
-                concerts.add(concert.copy())
+//                i("""
+//                    Concert Added For: ${concert.headlineAct}
+//                    Location: ${concert.address}
+//                    Contact At: ${concert.url}
+//                    Date: ${concert.day}/ ${concert.month}/ ${concert.year}
+//                    """)
+                app.concerts.add(concert.copy())
+                for (i in app.concerts.indices) {
+                    i("Placemark[$i]:${this.app.concerts[i]}")
+                }
+                setResult(RESULT_OK)
+                finish()
             }
             else {
                 Snackbar
