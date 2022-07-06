@@ -1,5 +1,6 @@
 package ie.wit.concertapplication.models
 
+import android.net.Uri
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
@@ -10,4 +11,5 @@ data class ConcertModel(var id: Long = 0,
                         var address: String = "",
                         var day: Int = 0,
                         var month: Int = 0,
-                        var year: Int = 0): Parcelable
+                        var year: Int = 0,
+                        var image: Uri = Uri.EMPTY): Parcelable
