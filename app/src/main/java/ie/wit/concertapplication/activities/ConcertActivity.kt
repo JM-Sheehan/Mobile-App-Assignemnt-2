@@ -18,6 +18,7 @@ class ConcertActivity : AppCompatActivity() {
     var concert = ConcertModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        var edit = false
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_concert)
 
@@ -32,10 +33,13 @@ class ConcertActivity : AppCompatActivity() {
         app = application as MainApp
 
         if(intent.hasExtra("concert_edit")){
+            edit = true
             concert = intent.extras?.getParcelable("concert_edit")!!
             binding.headlineAct.setText(concert.headlineAct)
             binding.url.setText(concert.url)
             binding.address.setText(concert.address)
+
+            binding.btnAdd.setText(R.string.save_concert)
             // Must implement date picking
         }
 
@@ -51,13 +55,18 @@ class ConcertActivity : AppCompatActivity() {
                 concert.url.isNotEmpty() &&
                 concert.address.isNotEmpty())
             {
-                app.concerts.create(concert.copy())
+                if(edit){
+                    app.concerts.update(concert.copy())
+                }
+                else{
+                    app.concerts.create(concert.copy())
+                }
                 setResult(RESULT_OK)
                 finish()
             }
             else {
                 Snackbar
-                    .make(it,"${binding}", Snackbar.LENGTH_LONG)
+                    .make(it,R.string.add_prompt, Snackbar.LENGTH_LONG)
                     .show()
             }
         }

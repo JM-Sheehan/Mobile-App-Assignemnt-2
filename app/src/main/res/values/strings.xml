@@ -8,4 +8,5 @@
     <string name="menu_addConcert">Add</string>
     <string name="menu_cancelConcert">Cancel</string>
     <string name="add_prompt">Info Missing, please fix</string>
+    <string name="save_concert">Save Concert</string>
 </resources>
