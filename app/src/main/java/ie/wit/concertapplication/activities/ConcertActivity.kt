@@ -1,6 +1,7 @@
 package ie.wit.concertapplication.activities
 
 import android.content.Intent
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
@@ -14,6 +15,7 @@ import ie.wit.concertapplication.databinding.ActivityConcertBinding
 import ie.wit.concertapplication.helpers.showImagePicker
 import ie.wit.concertapplication.main.MainApp
 import ie.wit.concertapplication.models.ConcertModel
+import ie.wit.concertapplication.models.Location
 import timber.log.Timber.i
 
 class ConcertActivity : AppCompatActivity() {
@@ -21,17 +23,17 @@ class ConcertActivity : AppCompatActivity() {
     lateinit var app: MainApp
     var concert = ConcertModel()
     private lateinit var imageIntentLauncher: ActivityResultLauncher<Intent>
+    val IMAGE_REQUEST = 1
+    private lateinit var mapIntentLauncher: ActivityResultLauncher<Intent>
+    var location = Location(52.245696, -7.139102, 15f)
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        var edit = false
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_concert)
 
-        i("Concert Activity started..")
+        var edit = false
 
         binding = ActivityConcertBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         binding.toolbarAdd.title = title
         setSupportActionBar(binding.toolbarAdd)
 
@@ -39,14 +41,22 @@ class ConcertActivity : AppCompatActivity() {
 
         if(intent.hasExtra("concert_edit")){
             edit = true
+
             concert = intent.extras?.getParcelable("concert_edit")!!
+
             binding.headlineAct.setText(concert.headlineAct)
             binding.url.setText(concert.url)
             binding.address.setText(concert.address)
+            binding.btnAdd.setText(R.string.save_concert)
+
             Picasso.get()
                 .load(concert.image)
                 .into(binding.concertImage)
-            binding.btnAdd.setText(R.string.save_concert)
+            if(concert.image!= Uri.EMPTY){
+                binding.chooseImage.setText(R.string.change_concert_image)
+            }
+
+
             // Must implement date picking
         }
 
@@ -68,6 +78,7 @@ class ConcertActivity : AppCompatActivity() {
                 else{
                     app.concerts.create(concert.copy())
                 }
+                i("add Button Pressed: $concert")
                 setResult(RESULT_OK)
                 finish()
             }
@@ -83,6 +94,12 @@ class ConcertActivity : AppCompatActivity() {
 
         binding.chooseImage.setOnClickListener(){
             showImagePicker(imageIntentLauncher)
+        }
+
+        binding.btnLocation.setOnClickListener{
+            val launcherIntent = Intent(this, MapActivity::class.java)
+                .putExtra("location", location)
+            mapIntentLauncher.launch(launcherIntent)
         }
 
     }
@@ -113,6 +130,24 @@ class ConcertActivity : AppCompatActivity() {
                             Picasso.get()
                                 .load(concert.image)
                                 .into(binding.concertImage)
+                            binding.chooseImage.setText(R.string.change_concert_image)
+                        } // end of if
+                    }
+                    RESULT_CANCELED -> { } else -> { }
+                }
+            }
+    }
+
+    private fun registerMapCallback() {
+        mapIntentLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult())
+            { result ->
+                when (result.resultCode) {
+                    RESULT_OK -> {
+                        if (result.data != null) {
+                            i("Got Location ${result.data.toString()}")
+                            location = result.data!!.extras?.getParcelable("location")!!
+                            i("Location == $location")
                         } // end of if
                     }
                     RESULT_CANCELED -> { } else -> { }

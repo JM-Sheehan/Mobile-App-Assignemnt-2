@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.LinearLayoutManager
 import ie.wit.concertapplication.R
 import ie.wit.concertapplication.adapters.ConcertAdapter
@@ -16,20 +18,22 @@ import ie.wit.concertapplication.models.ConcertModel
 class ConcertListActivity : AppCompatActivity(), ConcertListener {
     lateinit var app : MainApp
     private lateinit var binding: ActivityConcertListBinding
+    private lateinit var refreshIntentLauncher: ActivityResultLauncher<Intent>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding =ActivityConcertListBinding.inflate(layoutInflater)
-        setContentView(R.layout.activity_concert_list)
+        binding = ActivityConcertListBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        binding.toolbar.title = title
+        setSupportActionBar(binding.toolbar)
 
-        app =  application as MainApp
+        app = application as MainApp
 
         val layoutManager = LinearLayoutManager(this)
         binding.recyclerView.layoutManager = layoutManager
-        binding.recyclerView.adapter = ConcertAdapter(app.concerts.findAll(), this)
+        binding.recyclerView.adapter = ConcertAdapter(app.concerts.findAll(),this)
 
-        binding.toolbar.title = title
-        setSupportActionBar(binding.toolbar)
+        registerRefreshCallback()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -41,7 +45,7 @@ class ConcertListActivity : AppCompatActivity(), ConcertListener {
         when (item.itemId){
             R.id.item_add -> {
                 val launcherIntent = Intent(this, ConcertActivity::class.java)
-                startActivityForResult(launcherIntent, 0)
+                refreshIntentLauncher.launch(launcherIntent)
             }
         }
         return super.onOptionsItemSelected(item)
@@ -50,11 +54,13 @@ class ConcertListActivity : AppCompatActivity(), ConcertListener {
     override fun onConcertClick(concert: ConcertModel) {
         val launcherIntent = Intent(this, ConcertActivity::class.java)
         launcherIntent.putExtra("concert_edit", concert)
-        startActivityForResult(launcherIntent, 0)
+        refreshIntentLauncher.launch(launcherIntent)
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?){
-        binding.recyclerView.adapter?.notifyDataSetChanged()
-        super.onActivityResult(requestCode, resultCode, data)
+
+    private fun registerRefreshCallback(){
+        refreshIntentLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult())
+            {binding.recyclerView.adapter?.notifyDataSetChanged()}
     }
 }

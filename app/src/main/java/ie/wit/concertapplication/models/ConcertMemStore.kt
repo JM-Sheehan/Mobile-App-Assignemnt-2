@@ -32,6 +32,8 @@ class ConcertMemStore: ConcertStore
             foundConcert.day = concert.day
             foundConcert.month = concert.month
             foundConcert.year = concert.year
+            foundConcert.image  = concert.image
+            logAll()
         }
     }
 

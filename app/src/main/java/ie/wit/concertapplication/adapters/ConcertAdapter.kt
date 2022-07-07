@@ -3,6 +3,7 @@ package ie.wit.concertapplication.adapters
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.squareup.picasso.Picasso
 import ie.wit.concertapplication.databinding.CardConcertBinding
 import ie.wit.concertapplication.models.ConcertModel
 
@@ -35,6 +36,8 @@ private val listener: ConcertListener):
             binding.concertUrl.text = concert.url
             binding.concertAddress.text = concert.address
             binding.concertDate.text = "${concert.day} / ${concert.month} / ${concert.year}"
+
+            Picasso.get().load(concert.image).resize(200,200).into(binding.imageIcon)
 
             binding.root.setOnClickListener {listener.onConcertClick(concert)}
         }
