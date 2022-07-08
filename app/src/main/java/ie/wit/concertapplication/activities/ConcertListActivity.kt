@@ -31,7 +31,7 @@ class ConcertListActivity : AppCompatActivity(), ConcertListener {
 
         val layoutManager = LinearLayoutManager(this)
         binding.recyclerView.layoutManager = layoutManager
-        binding.recyclerView.adapter = ConcertAdapter(app.concerts.findAll(),this)
+        loadConcerts()
 
         registerRefreshCallback()
     }
@@ -58,9 +58,18 @@ class ConcertListActivity : AppCompatActivity(), ConcertListener {
     }
 
 
-    private fun registerRefreshCallback(){
+    private fun registerRefreshCallback() {
         refreshIntentLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult())
-            {binding.recyclerView.adapter?.notifyDataSetChanged()}
+            { loadConcerts() }
+    }
+
+    private fun loadConcerts() {
+        showConcerts(app.concerts.findAll())
+    }
+
+    fun showConcerts(concerts: List<ConcertModel>){
+        binding.recyclerView.adapter = ConcertAdapter(concerts, this)
+        binding.recyclerView.adapter?.notifyDataSetChanged()
     }
 }

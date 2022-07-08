@@ -25,7 +25,6 @@ class ConcertActivity : AppCompatActivity() {
     private lateinit var imageIntentLauncher: ActivityResultLauncher<Intent>
     val IMAGE_REQUEST = 1
     private lateinit var mapIntentLauncher: ActivityResultLauncher<Intent>
-    var location = Location(52.245696, -7.139102, 15f)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -88,20 +87,33 @@ class ConcertActivity : AppCompatActivity() {
                     .show()
             }
         }
-        binding.btnQuit.setOnClickListener(){
-            i("Quit Button Pressed")
-        }
+//        binding.btnQuit.setOnClickListener(){
+//            i("Quit Button Pressed")
+//        }
 
         binding.chooseImage.setOnClickListener(){
             showImagePicker(imageIntentLauncher)
         }
 
         binding.btnLocation.setOnClickListener{
+            val location = Location(52.245696, -7.139102, 15f)
+            if (concert.zoom != 0f) {
+                location.lat =  concert.lat
+                location.lng = concert.lng
+                location.zoom = concert.zoom
+            }
             val launcherIntent = Intent(this, MapActivity::class.java)
                 .putExtra("location", location)
             mapIntentLauncher.launch(launcherIntent)
         }
 
+        binding.btnDelete.setOnClickListener{
+            app.concerts.delete(concert.copy())
+            finish()
+        }
+
+        registerImagePickerCallback()
+        registerMapCallback()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -146,8 +158,11 @@ class ConcertActivity : AppCompatActivity() {
                     RESULT_OK -> {
                         if (result.data != null) {
                             i("Got Location ${result.data.toString()}")
-                            location = result.data!!.extras?.getParcelable("location")!!
+                            val location = result.data!!.extras?.getParcelable<Location>("location")!!
                             i("Location == $location")
+                            concert.lat = location.lat
+                            concert.lng = location.lng
+                            concert.zoom = location.zoom
                         } // end of if
                     }
                     RESULT_CANCELED -> { } else -> { }

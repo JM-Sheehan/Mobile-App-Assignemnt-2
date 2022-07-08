@@ -33,8 +33,15 @@ class ConcertMemStore: ConcertStore
             foundConcert.month = concert.month
             foundConcert.year = concert.year
             foundConcert.image  = concert.image
+            foundConcert.lat = concert.lat
+            foundConcert.lng = concert.lng
+            foundConcert.zoom = concert.zoom
             logAll()
         }
+    }
+
+    override fun delete(concert: ConcertModel) {
+        concerts.remove(concert)
     }
 
     fun logAll(){
