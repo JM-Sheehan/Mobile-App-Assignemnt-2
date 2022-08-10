@@ -18,6 +18,9 @@ class SignUpActivity : AppCompatActivity() {
         binding = ActivitySignUpBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        binding.toolbarAdd.title = title
+        setSupportActionBar(binding.toolbarAdd)
+
         firebaseAuth = FirebaseAuth.getInstance()
 
         binding.returnToSignIn.setOnClickListener {

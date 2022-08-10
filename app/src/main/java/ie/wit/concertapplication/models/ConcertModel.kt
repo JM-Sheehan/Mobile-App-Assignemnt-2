@@ -6,6 +6,7 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class ConcertModel(var id: Long = 0,
+                        var user: String = "",
                         var headlineAct: String = "",
                         var url: String = "",
                         var address: String = "",

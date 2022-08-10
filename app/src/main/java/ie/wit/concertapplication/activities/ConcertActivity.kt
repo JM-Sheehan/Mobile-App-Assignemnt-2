@@ -67,7 +67,7 @@ class ConcertActivity : AppCompatActivity() {
             concert.day = binding.datePicker.dayOfMonth
             concert.month = binding.datePicker.month
             concert.year = binding.datePicker.year
-
+            concert.user = FirebaseAuth.getInstance().currentUser?.email.toString()
             if( concert.headlineAct.isNotEmpty() &&
                 concert.url.isNotEmpty() &&
                 concert.address.isNotEmpty())
@@ -88,9 +88,6 @@ class ConcertActivity : AppCompatActivity() {
                     .show()
             }
         }
-//        binding.btnQuit.setOnClickListener(){
-//            i("Quit Button Pressed")
-//        }
 
         binding.chooseImage.setOnClickListener(){
             showImagePicker(imageIntentLauncher)

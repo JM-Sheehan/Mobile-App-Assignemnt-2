@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -61,9 +62,17 @@ class ConcertListActivity : AppCompatActivity(), ConcertListener {
     }
 
     override fun onConcertClick(concert: ConcertModel) {
-        val launcherIntent = Intent(this, ConcertActivity::class.java)
-        launcherIntent.putExtra("concert_edit", concert)
-        refreshIntentLauncher.launch(launcherIntent)
+        val email = FirebaseAuth.getInstance().currentUser?.email.toString()
+
+        if (email == concert.user){
+            val launcherIntent = Intent(this, ConcertActivity::class.java)
+            launcherIntent.putExtra("concert_edit", concert)
+            refreshIntentLauncher.launch(launcherIntent)
+        }
+        else{
+            Toast.makeText(this, "Only The Creator can Edit Concert Posting", Toast.LENGTH_SHORT).show()
+        }
+
     }
 
 

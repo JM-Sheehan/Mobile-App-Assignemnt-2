@@ -36,7 +36,7 @@ private val listener: ConcertListener):
             binding.concertUrl.text = concert.url
             binding.concertAddress.text = concert.address
             binding.concertDate.text = "${concert.day} / ${concert.month} / ${concert.year}"
-
+            binding.concertCoordinates.text = "lat: ${concert.lat} long:${concert.lng}"
             Picasso.get().load(concert.image).resize(200,200).into(binding.imageIcon)
 
             binding.root.setOnClickListener {listener.onConcertClick(concert)}
