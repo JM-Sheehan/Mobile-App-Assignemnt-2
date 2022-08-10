@@ -9,6 +9,7 @@ import android.view.MenuItem
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.auth.FirebaseAuth
 import com.squareup.picasso.Picasso
 import ie.wit.concertapplication.R
 import ie.wit.concertapplication.databinding.ActivityConcertBinding
@@ -33,7 +34,7 @@ class ConcertActivity : AppCompatActivity() {
 
         binding = ActivityConcertBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        binding.toolbarAdd.title = title
+        binding.toolbarAdd.title = FirebaseAuth.getInstance().currentUser?.email.toString()
         setSupportActionBar(binding.toolbarAdd)
 
         app = application as MainApp

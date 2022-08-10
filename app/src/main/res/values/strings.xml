@@ -1,12 +1,13 @@
 <resources>
     <string name="app_name">ConcertApplication</string>
-    <string name="button_addConcert">Add a Concert</string>
+    <string name="button_addConcert">Add Concert</string>
     <string name="button_quit">Quit</string>
     <string name="hint_headlineAct">Headline Act</string>
     <string name="hint_url">URL</string>
     <string name="hint_address">Address</string>
     <string name="menu_addConcert">Add</string>
     <string name="menu_cancelConcert">Cancel</string>
+    <string name="menu_signOut">Sign Out</string>
     <string name="add_prompt">Info Missing, please fix</string>
     <string name="save_concert">Save Concert</string>
     <string name="button_addImage">Add Image</string>
@@ -15,4 +16,10 @@
     <string name="button_location">Set Location</string>
     <string name="title_activity_map">MapActivity</string>
     <string name="button_delete_concert">Delete</string>
+    <string name="hint_email">Email Address</string>
+    <string name="hint_password">Password</string>
+    <string name="hint_confirm_password">Confirm Password</string>
+    <string name="button_sign_in">Sign In</string>
+    <string name="button_sign_up">Register</string>
+    <string name="button_sign_in_back">Back to Sign In</string>
 </resources>

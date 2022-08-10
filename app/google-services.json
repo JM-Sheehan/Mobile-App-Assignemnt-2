@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "87812732859",
+    "project_id": "concertapplication-ab308",
+    "storage_bucket": "concertapplication-ab308.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:87812732859:android:58658f0c84951ed5b5769e",
+        "android_client_info": {
+          "package_name": "org.wit.placemark"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "87812732859-8tg16h08f3iniit5lutfpss5s75hlbf1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAxw0abz1lE2e-nTTbfM0GQ-I3ucW19qyA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "87812732859-8tg16h08f3iniit5lutfpss5s75hlbf1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

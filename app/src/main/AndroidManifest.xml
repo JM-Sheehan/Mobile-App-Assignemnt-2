@@ -14,20 +14,32 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
+
         <activity
-            android:name=".activities.MapActivity"
-            android:exported="false"
-            android:label="@string/title_activity_map" />
-        <activity
-            android:name=".activities.ConcertListActivity"
+            android:name=".activities.SignInActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.ConcertActivity"></activity>
+        <activity
+            android:name=".activities.MapActivity"
+            android:exported="false"
+            android:label="@string/title_activity_map"
+            />
+        <activity
+            android:name=".activities.ConcertListActivity"
+            android:exported="false"
+            />
+        <activity
+            android:name=".activities.ConcertActivity"
+            android:exported="false"
+            />
+        <activity
+            android:name=".activities.SignUpActivity"
+            android:exported="false"
+            />
     </application>
 
 </manifest>
